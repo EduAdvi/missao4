@@ -6,7 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:missao_4/Back/FirebaseConfigs.dart';
 import 'package:missao_4/Back/global.dart' as Global;
-import 'package:missao_4/Telas/Evento_Add.dart';
+import 'package:missao_4/Telas/Backstage/Evento_Add.dart';
 import 'package:missao_4/Telas/home_screen.dart';
 import 'package:missao_4/Telas/inscrever_visita.dart';
 
@@ -29,13 +29,14 @@ class _Evento_CardState extends State<Evento_Card> {
   String titulo = widget.item.data()['Nome'];
   String vagas = widget.item.data()['vagas'];
   DateTime data = DateTime.parse(widget.item.data()['data'].toString());
-  String link = widget.item.data()['Imagem'];
+  var link = widget.item.data()['Imagem'];
   String id = widget.item.data()['id'];
   var t_vagas = vagas;
   String t_botao = 'teste';
   Color cor_botao;
   var eu_inscrito = widget.chave;
   print('OIA: '+eu_inscrito.toString());
+
 
     if (eu_inscrito == false){
        inscrito_b = 'Confirmar presença';

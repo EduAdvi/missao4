@@ -11,7 +11,7 @@ import 'package:missao_4/Telas/home_screen.dart';
 import 'package:missao_4/Telas/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:missao_4/Telas/Backstage/Evento_Relatorio.dart';
 
 import 'package:missao_4/Back/global.dart' as Global;
 
@@ -226,7 +226,7 @@ class CRUDFirestore{
        print(Global.id);
          await FirebaseFirestore.instance
                       .collection('Eventos')
-                      .doc(nome).set({
+                      .doc(Global.id).set({
                       'Nome': nome,
                       'Imagem': link,
                       'vagas': vagas,
@@ -250,6 +250,67 @@ class CRUDFirestore{
                       'vagas': vagas,
                       'data': data.toString(),
                       'id': Global.id
+                      }).then((value) {
+                         }).catchError((erro){
+                          print(erro);
+                          ScaffoldMessenger.of(contexto).showSnackBar( SnackBar(
+                          content: Text('Houve um Erro:'+erro),
+                          duration: Duration(seconds: 2),
+                          backgroundColor: Colors.green,
+                      ));
+                         });
+                  }).then((value) {
+                  }).catchError((erro){
+                    print(erro);
+                    ScaffoldMessenger.of(contexto).showSnackBar( SnackBar(
+                        content: Text('Houve um Erro:'+erro),
+                        duration: Duration(seconds: 2),
+                        backgroundColor: Colors.green,
+                      ));
+                  });
+    }).catchError((erro){
+                 ScaffoldMessenger.of(contexto).showSnackBar( SnackBar(
+                        content: Text('Houve um Erro:'+erro),
+                        duration: Duration(seconds: 2),
+                        backgroundColor: Colors.green,
+                      ));
+    });
+                  
+   
+ }
+
+Future Editar_evento(id,nome,link,vagas,data,context) async{
+   var contexto = context;
+   var mensagem;
+                 await  FirebaseFirestore.instance.collection('Eventos').get().then((value)async{
+      //Global.id = (value.size.toInt() + 1).toString()+':'+ DateTime.now().year.toString()+':'+ DateTime.now().month.toString()+':'+ DateTime.now().day.toString()+':'+TimeOfDay.now().hour.toString()+':'+TimeOfDay.now().minute.toString();
+       print(Global.id);
+         await FirebaseFirestore.instance
+                      .collection('Eventos')
+                      .doc(id).set({
+                      'Nome': nome,
+                      'Imagem': link,
+                      'vagas': vagas,
+                      'data': data.toString(),
+                      'id': id
+                  
+                  }).then((value) async{
+                      
+                      Navigator.pop(contexto);
+                      ScaffoldMessenger.of(contexto).showSnackBar(const SnackBar(
+                        content: Text('Evento marcado com sucesso'),
+                        duration: Duration(seconds: 2),
+                        backgroundColor: Colors.green,
+                      ));
+
+                       await FirebaseFirestore.instance
+                      .collection('Eventos_Log')
+                      .doc(id).collection('Data').doc('Info').set({
+                          'Nome': nome,
+                      'Imagem': link,
+                      'vagas': vagas,
+                      'data': data.toString(),
+                      //'id': Global.id
                       }).then((value) {
                          }).catchError((erro){
                           print(erro);
@@ -360,7 +421,36 @@ class CRUDFirestore{
     return evento.size;
   }
 
-}
+  Future Gerar_Relatorio(id_evento,context) async{
+     var inscritos_get = await FirebaseFirestore.instance.collection('Eventos_Log').doc(id_evento).collection('Data').doc('Inscritos').collection('Nomes').get();
+     var inscritos_totais = inscritos_get.size;
+     var evento = await FirebaseFirestore.instance.collection('Eventos_Log').doc(id_evento).collection('Data').doc('Info').get();
+     var vagas = evento.get('vagas');
+     var primeira_vez = 0;
+     var visita = 0;
+     var usuarios_inscrito = 0;
+    //print('inscritos para o evento clicado('+id_evento+'):');
+    var tem = false;
+    for(var doc in inscritos_get.docs){
+      print('   - '+doc.reference.id.toString());
+     
+      if(doc.data()['inscrito_por'] != 'si mesmo'){
+          if(doc.data()['primeira_vez'] == true){
+        primeira_vez ++;
+      }
+      else{
+        visita ++;
+        }
+      }
+      else{
+        usuarios_inscrito++;
+      }
+    }
+     print('Usuarios: '+usuarios_inscrito.toString()+'| visitas: '+ visita.toString() + ' | primeira vez: ' + primeira_vez.toString() + ' | vagas: '+ vagas.toString());
+      Navigator.push(context,  MaterialPageRoute(builder: (contexto) => Evento_Relatorio(vagas: vagas,visitas: visita,primeira_vez: primeira_vez,inscritos_usuarios: usuarios_inscrito,)));
+  }
+
+  }
 
 class GoogleCloud{
   Future EnviarImagem(file) async{

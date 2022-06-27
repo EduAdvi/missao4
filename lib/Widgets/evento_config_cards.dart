@@ -1,12 +1,16 @@
 import 'dart:async';
+import 'dart:ui';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:missao_4/Back/FirebaseConfigs.dart';
 import 'package:missao_4/Back/global.dart' as Global;
-import 'package:missao_4/Telas/Evento_Add.dart';
+import 'package:missao_4/Telas/Backstage/Evento_Add.dart';
+import 'package:missao_4/Telas/Backstage/Evento_Edit.dart';
+import 'package:missao_4/Telas/Backstage/Evento_Relatorio.dart';
 import 'package:missao_4/Telas/home_screen.dart';
 import 'package:missao_4/Telas/inscrever_visita.dart';
 
@@ -29,13 +33,14 @@ class _Evento_Config_CardState extends State<Evento_Config_Card> {
   String titulo = widget.item.data()['Nome'];
   String vagas = widget.item.data()['vagas'];
   DateTime data = DateTime.parse(widget.item.data()['data'].toString());
-  String link = widget.item.data()['Imagem'];
+  var link = widget.item.data()['Imagem'];
   String id = widget.item.data()['id'];
   var t_vagas = vagas;
   String t_botao = 'teste';
   Color cor_botao;
   var eu_inscrito = widget.chave;
   print('OIA: '+eu_inscrito.toString());
+
 
     if (eu_inscrito == false){
        inscrito_b = 'Confirmar presença';
@@ -94,74 +99,56 @@ class _Evento_Config_CardState extends State<Evento_Config_Card> {
               })
           ],),
          
-          Container(child: Image.network(link.toString(),height:350,),),
-           FutureBuilder(
-                future: CRUDFirestore().Conferir_Inscricao(Global.UserUid, id),
-                builder: (context,AsyncSnapshot value){
-                if(value.data.toString() == 'true'){
-                  return  Container( //botao
+          Column(
+            children: [
+                  
+             Container( padding: EdgeInsets.all(20), child: Image.network(link.toString(),height:150,),),
+             Column(
+              children: [
+        
+                   Container( //botao
                 padding: EdgeInsets.all(5),
                 height: 70,
-                width: 330,
+                width: 300,
 
                 child: ElevatedButton(
                     onPressed: () {
                       setState(() {
                    
-                          CRUDFirestore().Me_Desinscrever(Global.UserUid, id,context);
-                        
-                          //Navigator.push(context, MaterialPageRoute(builder: (contexto) => const Tela_Principal()));
-                      });
-                     //Navigator.push(context,  MaterialPageRoute(builder: (contexto) => const Tela_Principal()));
-                    },
-                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.red)),
-                    child: Text('Cancelar Inscrição',style: TextStyle(color: Colors.black),),
-                  ),
-              );
-                }
-                else{
-                return  Container( //botao
-  
-                padding: EdgeInsets.all(5),
-                height: 70,
-                width: 330,
-
-                child: ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                   
-                          
-                          Future(() { setState(() {CRUDFirestore().Me_inscrever(id, Global.UserUid, context);}); });
-                          //Navigator.push(context, MaterialPageRoute(builder: (contexto) => const Tela_Principal()));
-                       
-                          //Navigator.push(context, MaterialPageRoute(builder: (contexto) => const Tela_Principal()));
+             
+                          Navigator.push(context, MaterialPageRoute(builder: (contexto) => Evento_Edit(id: id,titulo: titulo,vagas: vagas,data: data,imagem: link)));
                       });
                      //Navigator.push(context,  MaterialPageRoute(builder: (contexto) => const Tela_Principal()));
                     },
                     style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.blue)),
-                    child: Text('Fazer Inscrição',style: TextStyle(color: Colors.black),),
-                  ),
-              );
-                }
-                }
+                    child: Text('Editar Evento',style: TextStyle(color: Colors.black),),
                 
-                ),
+                  ),
+              ),
+              
+               
           Container( //botao
                 padding: EdgeInsets.all(5),
                 height: 70,
-                width: 330,
+                width: 300,
                
                 child: ElevatedButton(
                     onPressed: () {
                        Global.evento_provisorio = id;
-                         Navigator.push(context,  MaterialPageRoute(builder: (contexto) => const Visita_Add()));
+                        CRUDFirestore().Gerar_Relatorio(id,context);
                     },
                     style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.blue)),
-                    child: Text('Inscrever uma visita',style: TextStyle(color: Colors.black),),
+                    child: Text('Relatório',style: TextStyle(color: Colors.black),),
                     
                   ),
               ),
       
+
+              ],
+             )
+            ],
+          ),
+         
              
                 
               

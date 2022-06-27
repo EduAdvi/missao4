@@ -28,7 +28,8 @@ class _Login_ScreenState extends State<Login_Screen> {
         centerTitle: true,
         backgroundColor: Colors.purple,
       ),
-      body: Column(
+      body: SingleChildScrollView(child:
+      Column(
         children:[
           Container(
           child:  Column(
@@ -108,6 +109,7 @@ class _Login_ScreenState extends State<Login_Screen> {
           ],)),
            
         ], 
+        ),
       ),
       bottomSheet:  Container(
         height: 15,

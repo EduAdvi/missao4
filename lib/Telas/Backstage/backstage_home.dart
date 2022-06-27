@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:missao_4/Back/FirebaseConfigs.dart';
-import 'package:missao_4/Telas/Evento_Add.dart';
-import 'package:missao_4/Telas/Eventos_home.dart';
+import 'package:missao_4/Telas/Backstage/Evento_Add.dart';
+import 'package:missao_4/Telas/Backstage/Eventos_home.dart';
 import 'package:missao_4/Telas/feed_screen.dart';
 import 'package:missao_4/Telas/home_screen.dart';
 import 'package:missao_4/Telas/login_screen.dart';
@@ -68,7 +68,7 @@ class _Backstage_HomeState extends State<Backstage_Home> {
                     )
                   ) ),
                     onPressed: () {
-                         Navigator.push(context,  MaterialPageRoute(builder: (contexto) => const Eventos_Home()));
+                         Navigator.push(context,  MaterialPageRoute(builder: (contexto) => const Evento_Home()));
                     },
                     //style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.blue)),
                     child: Center( child: Column( children: [

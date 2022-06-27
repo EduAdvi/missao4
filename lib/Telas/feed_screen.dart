@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:missao_4/Back/FirebaseConfigs.dart';
 import 'package:missao_4/Back/global.dart' as Global;
-import 'package:missao_4/Telas/Evento_Add.dart';
+import 'package:missao_4/Telas/Backstage/Evento_Add.dart';
 import 'package:missao_4/Telas/home_screen.dart';
 import 'package:missao_4/Widgets/evento_cards.dart';
 

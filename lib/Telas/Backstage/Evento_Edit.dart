@@ -9,21 +9,20 @@ import 'package:missao_4/Telas/login_screen.dart';
 import 'package:missao_4/Back/global.dart' as Global;
 import 'package:image_picker/image_picker.dart';
 
-
-//import 'package:firebase_auth/firebase_auth.dart';
-//import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:firebase_core/firebase_core.dart';
-//import 'package:firebase_auth_web/firebase_auth_web.dart';
-
-
-class Evendo_Add extends StatefulWidget {
-  const Evendo_Add({ Key? key }) : super(key: key);
+class Evento_Edit extends StatefulWidget {
+  final id;
+  final titulo;
+  final vagas;
+  final data;
+  final imagem;
+  
+  const Evento_Edit({ Key? key,this.id,this.titulo,this.vagas,this.data,this.imagem }) : super(key: key);
 
   @override
-  State<Evendo_Add> createState() => _Evendo_AddState();
+  State<Evento_Edit> createState() => _Evento_EditState();
 }
 
-class _Evendo_AddState extends State<Evendo_Add> {
+class _Evento_EditState extends State<Evento_Edit> {
   
   Future Pegar_imagem_galeria() async{
     final ImagePicker picker = ImagePicker();
@@ -37,8 +36,6 @@ class _Evendo_AddState extends State<Evendo_Add> {
 
 }
 
-  
-
   @override
   var link_imagem;
   var TextoNome = TextEditingController();
@@ -47,13 +44,18 @@ class _Evendo_AddState extends State<Evendo_Add> {
   var TextoEmail = TextEditingController();
   var TextoCEmail = TextEditingController();
   var imagem_arquivo;
-
+  var imagem_link;
 
   Widget build(BuildContext context) {
     
    var  _data;
-
-
+    TextoEmail.text = widget.titulo.toString();
+    TextoCSenha.text = widget.vagas;
+    imagem_link = widget.imagem;
+    if(imagem_link == null){
+      imagem_link = '';
+    }
+    Global.data_t = widget.data.toString();
     return Scaffold(
       
       appBar: AppBar(
@@ -239,7 +241,10 @@ class _Evendo_AddState extends State<Evendo_Add> {
                         color: Colors.grey,
                         borderRadius: BorderRadius.circular(30)
                         ),
-                      child: Center(child: Icon(Icons.image),),                  
+                      child:  Column(children: [
+                          Image.network(imagem_link,width: 300,height: 300 ),
+                          //Text(imagem_arquivo)
+                      ],),                  
 
                   )
                  ),
@@ -284,11 +289,16 @@ class _Evendo_AddState extends State<Evendo_Add> {
                
                 child: ElevatedButton(
                     onPressed: () {
-                      CRUDFirestore().Marcar_evento(TextoEmail.text, Global.imagem_provisoria, TextoCSenha.text, Global.data_final, context);
+                      if (Global.imagem_provisoria ==  null){
+                        CRUDFirestore().Editar_evento(widget.id,TextoEmail.text,widget.imagem, TextoCSenha.text, Global.data_final, context);
+                      }
+                      else{
+                        CRUDFirestore().Editar_evento(widget.id,TextoEmail.text, Global.imagem_provisoria, TextoCSenha.text, Global.data_final, context);
+                      }
                       //(nome,link,vagas,data,context)
                     },
-                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.purple)),
-                    child: Text('Marcar'),
+                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.green)),
+                    child: Text('Salvar'),
                   ),
               ),
              

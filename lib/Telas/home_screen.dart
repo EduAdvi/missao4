@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:missao_4/Back/global.dart' as Global;
-import 'package:missao_4/Telas/backstage_home.dart';
+import 'package:missao_4/Telas/Backstage/backstage_home.dart';
 
 import 'package:missao_4/Telas/feed_screen.dart';
-import 'package:missao_4/Telas/Evento_Add.dart';
+import 'package:missao_4/Telas/Backstage/Evento_Add.dart';
 
 class Tela_Principal extends StatefulWidget {
   const Tela_Principal({ Key? key }) : super(key: key);
@@ -86,6 +86,20 @@ class _Tela_PrincipalState extends State<Tela_Principal> {
             leading: Icon(Icons.exit_to_app,color: Colors.red,),
             title: Text('Deslogar',style: TextStyle(color: Colors.red),),
             onTap: () => {Navigator.of(context).pop()},
+          ),
+           ListTile(
+            leading: Icon(Icons.exit_to_app,color: Colors.red,),
+            title: Text('Gravar ini',style: TextStyle(color: Colors.red),),
+            onTap: () => {
+              Global.Gravar_ini('email', 'senha')
+            },
+          ),
+           ListTile(
+            leading: Icon(Icons.exit_to_app,color: Colors.red,),
+            title: Text('Ler ini',style: TextStyle(color: Colors.red),),
+            onTap: () => {
+              Global.Ler_INI()
+            },
           ),
         ],
       ),

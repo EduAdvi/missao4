@@ -1,57 +1,41 @@
-
-import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:missao_4/Back/FirebaseConfigs.dart';
-import 'package:missao_4/Telas/Evento_Add.dart';
-import 'package:missao_4/Telas/feed_screen.dart';
-import 'package:missao_4/Telas/home_screen.dart';
-import 'package:missao_4/Telas/login_screen.dart';
-import 'package:missao_4/Back/global.dart' as Global;
-import 'package:image_picker/image_picker.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:missao_4/Back/FirebaseConfigs.dart';
+import 'package:missao_4/Back/global.dart' as Global;
+import 'package:missao_4/Telas/Backstage/Evento_Add.dart';
+import 'package:missao_4/Telas/home_screen.dart';
+import 'package:missao_4/Widgets/evento_cards.dart';
 import 'package:missao_4/Widgets/evento_config_cards.dart';
 
-
-//import 'package:firebase_auth/firebase_auth.dart';
-//import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:firebase_core/firebase_core.dart';
-//import 'package:firebase_auth_web/firebase_auth_web.dart';
-
-
-class Eventos_Home extends StatefulWidget {
-
-  const Eventos_Home({ Key? key}): super(key: key);
-  
+class Evento_Home extends StatefulWidget {
+  const Evento_Home({ Key? key }) : super(key: key);
+ 
   @override
-  
-  State<Eventos_Home> createState() => _Eventos_HomeState();
+  State<Evento_Home> createState() => Evento_HomeState();
+
 }
 
-class _Eventos_HomeState extends State<Eventos_Home> {
-  
-
+class Evento_HomeState extends State<Evento_Home> {
+  late CollectionReference feedHome;
   @override
+  void initState() {
+    super.initState();
+    feedHome = FirebaseFirestore.instance.collection('Eventos');
+  }
 
   Widget build(BuildContext context) {
-    
-   var  _data;
-
-
     return Scaffold(
-      
       appBar: AppBar(
-        title: Text('Gerenciar eventos'),
+        title: Text('Eventos'),
         centerTitle: true,
         backgroundColor: Colors.purple,
       ),
-      body: SingleChildScrollView(
-      // scrollDirection: ScrollDirection.,
-        child:  Container(
+      backgroundColor: Colors.white,
+      body: Container(
         
           decoration: BoxDecoration(color: Colors.white),
           child: StreamBuilder<QuerySnapshot>(
-            stream:  FirebaseFirestore.instance.collection('Eventos').snapshots(),
+            stream:  feedHome.snapshots(),
             builder: (context, snapshot) {
               switch (snapshot.connectionState){
                 case ConnectionState.none:
@@ -78,16 +62,13 @@ class _Eventos_HomeState extends State<Eventos_Home> {
               }
             },
           )),
-     // bottomSheet:  Text(' @Powered by IEQ Barrinha', textAlign: TextAlign.center,)       
-    ),
-   floatingActionButton: FloatingActionButton(
+       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Add your onPressed code here!
+          Navigator.push(context, MaterialPageRoute(builder: (contexto) => const Evendo_Add()));
         },
-        backgroundColor: Colors.purple,
+        backgroundColor: Color.fromARGB(255, 181, 130, 190),
         child: const Icon(Icons.add),
-      ));
+      ),
+    );
   }
- 
 }
- 

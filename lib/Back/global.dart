@@ -8,6 +8,7 @@ import 'package:missao_4/Telas/login_screen.dart';
 import 'package:missao_4/Back/FirebaseConfigs.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ini/ini.dart';
 
 
 import 'package:image_picker/image_picker.dart';
@@ -15,7 +16,8 @@ import 'package:image_picker/image_picker.dart';
 //import 'package:firebase_core/firebase_firestore.dart';
 
 var nome = 'Missão 4';
-var debug = true;
+var debug = false;
+var backstage_account = false;
 var UserUid;
 var Username;
 var borda = 10;
@@ -47,4 +49,25 @@ Future<File> Pegar_imagem() async{
      GoogleCloud().EnviarImagem(file);
      arquivo_imagem = file;
      return file;
+}
+
+void Ler_INI() {
+  var email;
+  var senha;
+ 
+  print('ler ini');
+  new File("config.ini").readAsLines()
+    .then((lines) => new Config.fromStrings(lines))
+    .then((Config config) => {
+      email = config.get("conta", "email"),
+      senha = config.get("conta", "senha"),
+      print(email+senha)
+    }).catchError((erro){
+      print(erro.toString());
+    });
+}
+
+void Gravar_ini(email,senha){
+  print('Gravar ini');
+  var config = File(''); 
 }
