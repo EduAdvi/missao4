@@ -47,7 +47,8 @@ class _Evendo_AddState extends State<Evendo_Add> {
   var TextoEmail = TextEditingController();
   var TextoCEmail = TextEditingController();
   var imagem_arquivo;
-
+  bool? checkedValue = false;
+  String dropdownValue = 'Abertas';
 
   Widget build(BuildContext context) {
     
@@ -59,7 +60,7 @@ class _Evendo_AddState extends State<Evendo_Add> {
       appBar: AppBar(
         title: Text('Marcar Evento'),
         centerTitle: true,
-        backgroundColor: Colors.purple,
+        backgroundColor: Global.principal,
       ),
       body: SingleChildScrollView(
        // scrollDirection: ScrollDirection.idle,
@@ -117,7 +118,7 @@ class _Evendo_AddState extends State<Evendo_Add> {
                    return Theme(
                           data: Theme.of(context).copyWith(
                         colorScheme: ColorScheme.light(
-                          primary: Colors.purple, // header background color
+                          primary: Global.principal, // header background color
                           onPrimary: Colors.white, // header text color
                           onSurface: Colors.black, // body text color
                         ),
@@ -140,7 +141,7 @@ class _Evendo_AddState extends State<Evendo_Add> {
                           print(_data);
                           
                     },
-                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.purple)),
+                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Global.principal)),
                     child: Text('Data'),
                   ),
               ),
@@ -168,7 +169,7 @@ class _Evendo_AddState extends State<Evendo_Add> {
                    return Theme(
                           data: Theme.of(context).copyWith(
                         colorScheme: ColorScheme.light(
-                          primary: Colors.purple, // header background color
+                          primary: Global.principal, // header background color
                           onPrimary: Colors.white, // header text color
                           onSurface: Colors.black, // body text color
                         ),
@@ -223,7 +224,7 @@ class _Evendo_AddState extends State<Evendo_Add> {
                           print(_data);
                           }
                     },
-                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.purple)),
+                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Global.principal)),
                     child: Text('Hora'),
                   ),
               ),
@@ -259,8 +260,6 @@ class _Evendo_AddState extends State<Evendo_Add> {
                   )
                  ),  
               
-              
-
               Container( //botao
                 padding: EdgeInsets.all(5),
                 height: 70,
@@ -271,10 +270,38 @@ class _Evendo_AddState extends State<Evendo_Add> {
                         Pegar_imagem_galeria();
                      
                     },
-                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.purple)),
+                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Global.principal)),
                     child: Text('Selecionar imagem'),
                   ),
               ),          
+                 Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+        Text('Estado das inscriçoes: '),
+         Container(child: DropdownButton<String>(
+            value: dropdownValue,
+            icon: const Icon(Icons.arrow_downward),
+            elevation: 20,
+            style:  TextStyle(color: Global.principal),
+            underline: Container(
+              height: 5,
+              color: Global.principal,
+            ),
+            onChanged: (String? newValue) {
+              setState(() {
+                dropdownValue = newValue!;
+              });
+            },
+            items: <String>['Abertas', 'Fechadas', 'Em Breve', 'Esgotadas']
+                .map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
+          ),
+     ),
+      ],), 
           
              
               Container( //botao
@@ -284,7 +311,7 @@ class _Evendo_AddState extends State<Evendo_Add> {
                
                 child: ElevatedButton(
                     onPressed: () {
-                      CRUDFirestore().Marcar_evento(TextoEmail.text, Global.imagem_provisoria, TextoCSenha.text, Global.data_final, context);
+                      CRUDFirestore().Marcar_evento(TextoEmail.text, Global.imagem_provisoria, TextoCSenha.text, Global.data_final,checkedValue,dropdownValue.toString(),'0', context);
                       //(nome,link,vagas,data,context)
                     },
                     style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.green)),

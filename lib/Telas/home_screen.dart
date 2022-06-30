@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:missao_4/Back/FirebaseConfigs.dart';
 import 'package:missao_4/Back/global.dart' as Global;
 import 'package:missao_4/Telas/Backstage/backstage_home.dart';
 
+import 'package:missao_4/Back/save_config.dart';
 import 'package:missao_4/Telas/feed_screen.dart';
 import 'package:missao_4/Telas/Backstage/Evento_Add.dart';
 
@@ -22,14 +24,13 @@ class _Tela_PrincipalState extends State<Tela_Principal> {
     //Global.Carregar_eventos();
     return Scaffold(
       appBar: AppBar(
-        leading: Builder(builder: (context) => // Ensure Scaffold is in context
+        leading: Builder(builder: (context) => 
             IconButton(
-             
                icon: Icon(Icons.menu),
                onPressed: () => Scaffold.of(context).openDrawer()
          )),
       
-        title: Text(Global.nome), backgroundColor: Colors.purple,automaticallyImplyLeading: false,
+        title: Text(Global.nome), backgroundColor: Global.principal,automaticallyImplyLeading: false,
        
       ),
       body: Container(
@@ -57,7 +58,7 @@ class _Tela_PrincipalState extends State<Tela_Principal> {
             ),),
              ]),
             decoration: BoxDecoration(
-                color: Colors.purple,
+                color: Global.principal,
                 image: DecorationImage(
                     fit: BoxFit.fill,
                     image: AssetImage('assets/images/preto.jpg'))),
@@ -85,20 +86,8 @@ class _Tela_PrincipalState extends State<Tela_Principal> {
           ListTile(
             leading: Icon(Icons.exit_to_app,color: Colors.red,),
             title: Text('Deslogar',style: TextStyle(color: Colors.red),),
-            onTap: () => {Navigator.of(context).pop()},
-          ),
-           ListTile(
-            leading: Icon(Icons.exit_to_app,color: Colors.red,),
-            title: Text('Gravar ini',style: TextStyle(color: Colors.red),),
-            onTap: () => {
-              Global.Gravar_ini('email', 'senha')
-            },
-          ),
-           ListTile(
-            leading: Icon(Icons.exit_to_app,color: Colors.red,),
-            title: Text('Ler ini',style: TextStyle(color: Colors.red),),
-            onTap: () => {
-              Global.Ler_INI()
+            onTap: (){
+                AutenticarComFirebase().logout(context);
             },
           ),
         ],

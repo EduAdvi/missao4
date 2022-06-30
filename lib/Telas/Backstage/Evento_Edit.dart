@@ -15,8 +15,11 @@ class Evento_Edit extends StatefulWidget {
   final vagas;
   final data;
   final imagem;
+  final visivel;
+  final insc_estado;
+  final presencas_finais;
   
-  const Evento_Edit({ Key? key,this.id,this.titulo,this.vagas,this.data,this.imagem }) : super(key: key);
+  const Evento_Edit({ Key? key,this.id,this.titulo,this.vagas,this.data,this.imagem,this.visivel,this.insc_estado,this.presencas_finais}) : super(key: key);
 
   @override
   State<Evento_Edit> createState() => _Evento_EditState();
@@ -43,25 +46,41 @@ class _Evento_EditState extends State<Evento_Edit> {
   var TextoCSenha = TextEditingController();
   var TextoEmail = TextEditingController();
   var TextoCEmail = TextEditingController();
+  var Text_presencas_totais = TextEditingController();
   var imagem_arquivo;
   var imagem_link;
+  bool? checkedValue = false;
+  String dropdownValue = 'Abertas';
+
+  var memoria = false;
 
   Widget build(BuildContext context) {
     
    var  _data;
+   var mexi_na_hora = false;
     TextoEmail.text = widget.titulo.toString();
     TextoCSenha.text = widget.vagas;
     imagem_link = widget.imagem;
     if(imagem_link == null){
       imagem_link = '';
     }
+
+    
+    
+  if(memoria == false){
+    checkedValue = widget.visivel;
+    dropdownValue = widget.insc_estado;
     Global.data_t = widget.data.toString();
+    Global.data_final = widget.data.toString();
+    Text_presencas_totais.text = widget.presencas_finais.toString();
+    memoria = true;
+  }
     return Scaffold(
       
       appBar: AppBar(
         title: Text('Marcar Evento'),
         centerTitle: true,
-        backgroundColor: Colors.purple,
+        backgroundColor: Global.principal,
       ),
       body: SingleChildScrollView(
        // scrollDirection: ScrollDirection.idle,
@@ -97,7 +116,7 @@ class _Evento_EditState extends State<Evento_Edit> {
                 ),
               ),
         
-                Row(
+                  Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
 
@@ -119,7 +138,7 @@ class _Evento_EditState extends State<Evento_Edit> {
                    return Theme(
                           data: Theme.of(context).copyWith(
                         colorScheme: ColorScheme.light(
-                          primary: Colors.purple, // header background color
+                          primary: Global.principal, // header background color
                           onPrimary: Colors.white, // header text color
                           onSurface: Colors.black, // body text color
                         ),
@@ -142,7 +161,7 @@ class _Evento_EditState extends State<Evento_Edit> {
                           print(_data);
                           
                     },
-                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.purple)),
+                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Global.principal)),
                     child: Text('Data'),
                   ),
               ),
@@ -170,7 +189,7 @@ class _Evento_EditState extends State<Evento_Edit> {
                    return Theme(
                           data: Theme.of(context).copyWith(
                         colorScheme: ColorScheme.light(
-                          primary: Colors.purple, // header background color
+                          primary: Global.principal, // header background color
                           onPrimary: Colors.white, // header text color
                           onSurface: Colors.black, // body text color
                         ),
@@ -222,10 +241,10 @@ class _Evento_EditState extends State<Evento_Edit> {
                           }
                              
                           Global.data_final = _data.toString();
-                          print(_data);
+                          print(Global.data_final);
                           }
                     },
-                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.purple)),
+                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Global.principal)),
                     child: Text('Hora'),
                   ),
               ),
@@ -276,12 +295,69 @@ class _Evento_EditState extends State<Evento_Edit> {
                         Pegar_imagem_galeria();
                      
                     },
-                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.purple)),
+                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Global.principal)),
                     child: Text('Selecionar imagem'),
                   ),
               ),          
           
-             
+             Container( //botao
+                padding: EdgeInsets.all(5),
+                height: 80,
+                width: 400,
+               
+                child: CheckboxListTile(
+                  title: Text("Visivel"),
+                  subtitle: Text("Fica visivel no feed dos membros"),
+                      value: checkedValue,
+                      onChanged: (newValue) {
+                          setState(() {
+                          checkedValue = newValue;
+                          print(checkedValue);
+                        });
+                        },
+                        controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
+                      )
+              ),   
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+        Text('Estado das inscriçoes: '),
+         Container(child: DropdownButton<String>(
+            value: dropdownValue,
+            icon: const Icon(Icons.arrow_downward),
+            elevation: 20,
+            style:  TextStyle(color: Global.principal),
+            underline: Container(
+              height: 5,
+              color: Global.principal,
+            ),
+            onChanged: (String? newValue) {
+              setState(() {
+                dropdownValue = newValue!;
+              });
+            },
+            items: <String>['Abertas', 'Fechadas', 'Em Breve', 'Esgotadas']
+                .map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
+          ),
+     ),
+      ],),
+        
+              Container(
+                width: 200,
+                padding: EdgeInsets.fromLTRB(25, 10, 25, 10),
+                child: TextField(
+                  controller: Text_presencas_totais,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Presenças Finais',
+                  ),
+                ),
+              ),
               Container( //botao
                 padding: EdgeInsets.all(5),
                 height: 70,
@@ -290,10 +366,13 @@ class _Evento_EditState extends State<Evento_Edit> {
                 child: ElevatedButton(
                     onPressed: () {
                       if (Global.imagem_provisoria ==  null){
-                        CRUDFirestore().Editar_evento(widget.id,TextoEmail.text,widget.imagem, TextoCSenha.text, Global.data_final, context);
+                           CRUDFirestore().Editar_evento(widget.id,TextoEmail.text,widget.imagem, TextoCSenha.text, Global.data_final,checkedValue,dropdownValue.toString(),Text_presencas_totais.text, context);
+                     
                       }
                       else{
-                        CRUDFirestore().Editar_evento(widget.id,TextoEmail.text, Global.imagem_provisoria, TextoCSenha.text, Global.data_final, context);
+                         CRUDFirestore().Editar_evento(widget.id,TextoEmail.text, Global.imagem_provisoria, TextoCSenha.text, Global.data_final,checkedValue,dropdownValue.toString(),Text_presencas_totais.text, context);
+                     
+                      
                       }
                       //(nome,link,vagas,data,context)
                     },

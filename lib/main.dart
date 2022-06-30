@@ -27,8 +27,16 @@ void main() async{
         GlobalMaterialLocalizations.delegate,
          GlobalWidgetsLocalizations.delegate
       ],
+      theme: ThemeData(
+          brightness: Brightness.light,
+          primarySwatch: Colors.blueGrey,
+          iconTheme: IconThemeData(
+            color: Global.principal,
+          ),
+
+        ),
       supportedLocales: [const Locale('pt','BR')],
-      home: Global.start(),
+      home: await Global.start(),
       debugShowCheckedModeBanner: false,
     )
   );

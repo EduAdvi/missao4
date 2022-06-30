@@ -11,162 +11,165 @@ import 'package:missao_4/Back/FirebaseConfigs.dart';
 //import 'package:firebase_core/firebase_core.dart';
 //import 'package:firebase_auth_web/firebase_auth_web.dart';
 
-
 class Cadastro_Screen extends StatefulWidget {
-  const Cadastro_Screen({ Key? key }) : super(key: key);
+  const Cadastro_Screen({Key? key}) : super(key: key);
 
   @override
   State<Cadastro_Screen> createState() => _Cadastro_ScreenState();
 }
 
 class _Cadastro_ScreenState extends State<Cadastro_Screen> {
-  
   @override
-
   var TextoNome = TextEditingController();
   var TextoSenha = TextEditingController();
   var TextoCSenha = TextEditingController();
   var TextoEmail = TextEditingController();
   var TextoCEmail = TextEditingController();
 
-
-
   Widget build(BuildContext context) {
-    
-   var  _aniversario;
+    var _aniversario;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Cadastro'),
-        centerTitle: true,
-        backgroundColor: Colors.purple,
-      ),
-      body: Column(
-        children:[
-          Container(
-          child:  Column(
-            
-            children: [
-             
-              Container(
-                padding: EdgeInsets.fromLTRB(25, 10, 25, 10),
-                child: TextField(
-                  controller: TextoEmail,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Email',
+        appBar: AppBar(
+          title: Text('Cadastro'),
+          centerTitle: true,
+          backgroundColor: Global.principal,
+        ),
+        body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+                child: Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.fromLTRB(70, 10, 70, 10),
+                  child: TextField(
+                    controller: TextoEmail,
+                    decoration: InputDecoration(
+                       border: UnderlineInputBorder(),
+                      labelText: 'Email',
+                    ),
                   ),
                 ),
-              ),
-               Container(
-                padding: EdgeInsets.fromLTRB(25, 10, 25, 10),
-                child: TextField(
-                  controller: TextoCEmail,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Confirmar Email',
+                Container(
+                  padding: EdgeInsets.fromLTRB(70, 10, 70, 10),
+                  child: TextField(
+                    controller: TextoCEmail,
+                    decoration: InputDecoration(
+                       border: UnderlineInputBorder(),
+                      labelText: 'Confirmar Email',
+                    ),
                   ),
                 ),
-              ),
-           Container(
-                padding: EdgeInsets.fromLTRB(25, 10, 25, 10),
-                child: TextField(
-                  controller: TextoSenha,
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Senha',
-                    
+                Container(
+                  padding: EdgeInsets.fromLTRB(70, 10, 70, 10),
+                  child: TextField(
+                    controller: TextoSenha,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                       border: UnderlineInputBorder(),
+                      labelText: 'Senha',
+                    ),
                   ),
                 ),
-              ),
-              Container(
-                padding: EdgeInsets.fromLTRB(25, 10, 25, 10),
-                child: TextField(
-                  controller: TextoCSenha,
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Confirmar Senha',
-                    
+                Container(
+                  padding: EdgeInsets.fromLTRB(70, 10, 70, 10),
+                  child: TextField(
+                    controller: TextoCSenha,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                       border: UnderlineInputBorder(),
+                      labelText: 'Confirmar Senha',
+                    ),
                   ),
                 ),
-              ),
-             Container(
-                padding: EdgeInsets.fromLTRB(25, 10, 25, 10),
-                child: TextField(
-                  controller: TextoNome,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Nome',
+                Container(
+                  padding: EdgeInsets.fromLTRB(70, 10, 70, 10),
+                  child: TextField(
+                    controller: TextoNome,
+                    decoration: InputDecoration(
+                       border: UnderlineInputBorder(),
+                      labelText: 'Nome',
+                    ),
                   ),
                 ),
-              ),
+                 Container(
+                    //botao
+                    padding: EdgeInsets.all(5),
+                    height: 70,
+                    width: 200,
 
-              
-              Container( //botao
-                padding: EdgeInsets.all(5),
-                height: 70,
-                width: 200,
-               
-                child: ElevatedButton(
-                    onPressed: () async{
-                    _aniversario = await showDatePicker(
-                          context: context, 
+                    child: RaisedButton(
+                      textTheme: ButtonTextTheme.normal,
+                      child:
+                          Text('Selecionar Aniversário', style: TextStyle(color: Global.texto)),
+                      color: Global.fundo,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          side: BorderSide(color: Global.principal)),
+                      onPressed: () async {
+                      _aniversario = await showDatePicker(
+                          context: context,
                           initialEntryMode: DatePickerEntryMode.input,
-                        
-                 builder: (context, child) {
-                   return Theme(
-                          data: Theme.of(context).copyWith(
-                        colorScheme: ColorScheme.light(
-                          primary: Colors.purple, // header background color
-                          onPrimary: Colors.white, // header text color
-                          onSurface: Colors.black, // body text color
-                        ),
-                       
-                      ),
-                      child: child!,
-                    );
-                  },
-    
-                          //locale:  const Locale('es','ES'),
+                          builder: (context, child) {
+                            return Theme(
+                              data: Theme.of(context).copyWith(
+                                colorScheme: ColorScheme.light(
+                                  primary: Global
+                                      .principal,
+                                  onPrimary: Colors.white, 
+                                  onSurface: Colors.black, 
+                                ),
+                              ),
+                              child: child!,
+                            );
+                          },
                           fieldLabelText: 'Escreva o dia que você nasceu :D',
-                          //locale: Locale('pt','BR'),
                           helpText: 'Selecione o dia que você nasceu',
-                          initialDate: DateTime(2000), 
-                          firstDate: DateTime(1920), 
-                          lastDate: DateTime.now()
-                          );  
+                          initialDate: DateTime(2000),
+                          firstDate: DateTime(1920),
+                          lastDate: DateTime.now());
                     },
-                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.purple)),
-                    child: Text('Selecionar Aniversario'),
+                    ),
                   ),
-              ),
-          
-              Container( //botao
-                padding: EdgeInsets.all(5),
-                height: 70,
-                width: 200,
-               
-                child: ElevatedButton(
-                    onPressed: () {
+                Container(
+                    //botao
+                    padding: EdgeInsets.all(5),
+                    height: 70,
+                    width: 200,
+
+                    child: RaisedButton(
+                      textTheme: ButtonTextTheme.normal,
+                      child:
+                          Text('Cadastrar', style: TextStyle(color: Global.texto1)),
+                      color: Global.principal,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          side: BorderSide(color: Global.principal)),
+                       onPressed: () {
                       print(_aniversario);
-                      AutenticarComFirebase().criar_conta(TextoEmail.text,TextoCEmail,TextoSenha.text,TextoCSenha.text,TextoNome.text,_aniversario,context);
+                      AutenticarComFirebase().criar_conta(
+                          TextoEmail.text,
+                          TextoCEmail,
+                          TextoSenha.text,
+                          TextoCSenha.text,
+                          TextoNome.text,
+                          _aniversario,
+                          context);
                     },
-                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.purple)),
-                    child: Text('Cadastrar'),
+                    ),
                   ),
-              ),
-             
-             
-              
-          ],)),
-           
-        ], 
-      ),
-      bottomSheet:  Text(' @Powered by IEQ Barrinha', textAlign: TextAlign.center,)       
-    );
+                
+              ],
+            )),
+          ],
+        ),),
+        bottomSheet: Container(
+            height: 15,
+            alignment: Alignment.bottomCenter,
+            child: Text(
+              '  @Powered by IEQ Barrinha',
+              textAlign: TextAlign.center,
+            )));
   }
- 
 }
- 

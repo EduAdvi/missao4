@@ -47,6 +47,23 @@ dependencies:
   image_picker: ^0.8.5+3
   pie_chart: ^5.3.1
   ini: ^2.1.0
+  shared_preferences: ^2.0.15
+  flutter_launcher_icons: ^0.9.3
+  flutter_native_splash: ^2.2.3+1
+
+flutter_native_splash:
+  color: "#FFFFFF"
+  image: "images/preto.png"
+  android: true
+  ios: true
+
+flutter_icons:
+  image_path: "images/preto.png"
+  ios: true
+  remove_alpha_ios: true
+  android: "launcher_icon"
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "images/preto.png"
 
 
   #firebase_auth_web: ^3.3.13

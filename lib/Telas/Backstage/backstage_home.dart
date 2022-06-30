@@ -4,6 +4,8 @@ import 'package:flutter/rendering.dart';
 import 'package:missao_4/Back/FirebaseConfigs.dart';
 import 'package:missao_4/Telas/Backstage/Evento_Add.dart';
 import 'package:missao_4/Telas/Backstage/Eventos_home.dart';
+import 'package:missao_4/Telas/Backstage/Pessoas_Evento_screen.dart';
+import 'package:missao_4/Telas/Backstage/Pessoas_screen.dart';
 import 'package:missao_4/Telas/feed_screen.dart';
 import 'package:missao_4/Telas/home_screen.dart';
 import 'package:missao_4/Telas/login_screen.dart';
@@ -18,6 +20,7 @@ import 'package:image_picker/image_picker.dart';
 
 
 class Backstage_Home extends StatefulWidget {
+  
 
   const Backstage_Home({ Key? key}): super(key: key);
   @override
@@ -39,11 +42,16 @@ class _Backstage_HomeState extends State<Backstage_Home> {
       appBar: AppBar(
         title: Text('Backstage Account'),
         centerTitle: true,
-        backgroundColor: Colors.purple,
+        backgroundColor: Global.principal,
       ),
-      body: SingleChildScrollView(
+      body: 
+      Container(
+      decoration: BoxDecoration(color: Global.fundo),
+      child:SingleChildScrollView(
+    
       // scrollDirection: ScrollDirection.,
         child: Column(
+          
         children:[
 
           Row(
@@ -55,16 +63,16 @@ class _Backstage_HomeState extends State<Backstage_Home> {
                 
                 width: 100,
                 height: 100,
-                decoration: BoxDecoration(color: Colors.purple,borderRadius: BorderRadius.circular(30) ),
+                decoration: BoxDecoration(color: Global.principal,borderRadius: BorderRadius.circular(30) ),
                 child:  ElevatedButton(
 
                   style: ButtonStyle(
                     
-                    backgroundColor:  MaterialStateProperty.all<Color>(Colors.purple),
+                    backgroundColor:  MaterialStateProperty.all<Color>(Global.principal),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
-                  side: BorderSide(color: Colors.purple)
+                  side: BorderSide(color: Global.principal)
                     )
                   ) ),
                     onPressed: () {
@@ -84,20 +92,20 @@ class _Backstage_HomeState extends State<Backstage_Home> {
                 padding: EdgeInsets.all(0),
                 width: 100,
                 height: 100,
-                decoration: BoxDecoration(color: Colors.purple,borderRadius: BorderRadius.circular(30) ),
+                decoration: BoxDecoration(color: Global.principal,borderRadius: BorderRadius.circular(30) ),
                 child:  ElevatedButton(
 
                   style: ButtonStyle(
                     
-                    backgroundColor:  MaterialStateProperty.all<Color>(Colors.purple),
+                    backgroundColor:  MaterialStateProperty.all<Color>(Global.principal),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
-                  side: BorderSide(color: Colors.purple)
+                  side: BorderSide(color: Global.principal)
                     )
                   ) ),
                     onPressed: () {
-                      
+                        Navigator.push(context,  MaterialPageRoute(builder: (contexto) => const Pessoas_Screen()));
                     },
                     //style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.blue)),
                     child: Center( child: Column( children: [
@@ -113,7 +121,7 @@ class _Backstage_HomeState extends State<Backstage_Home> {
         ], 
       ),
      // bottomSheet:  Text(' @Powered by IEQ Barrinha', textAlign: TextAlign.center,)       
-    ));
+    )));
   }
  
 }

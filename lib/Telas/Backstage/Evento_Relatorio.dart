@@ -15,8 +15,8 @@ class Evento_Relatorio extends StatefulWidget {
   final inscritos_usuarios;
   final visitas;
   final primeira_vez;
-
-  const Evento_Relatorio({ Key? key,this.vagas,this.inscritos_usuarios,this.primeira_vez,this.visitas}) : super(key: key);
+  final pessoas_finais;
+  const Evento_Relatorio({ Key? key,this.vagas,this.inscritos_usuarios,this.primeira_vez,this.visitas,this.pessoas_finais}) : super(key: key);
 
   @override
   State<Evento_Relatorio> createState() => _Evento_RelatorioState();
@@ -33,10 +33,10 @@ class _Evento_RelatorioState extends State<Evento_Relatorio> {
     
   double vagas = double.parse(widget.vagas.toString());
   double inscritos_usuarios = double.parse(widget.inscritos_usuarios.toString());
-  double visitas =double.parse(widget.visitas.toString());
+  double visitas = double.parse(widget.visitas.toString());
   double primeira_vez = double.parse(widget.primeira_vez.toString());
   double sobras = vagas - (visitas+primeira_vez+inscritos_usuarios);
-
+  double pessoas_finais = double.parse(widget.pessoas_finais.toString());
 //visao geral data
    final visao_geral = <String, double>{
     "Inscritos Membros: "+inscritos_usuarios.toString(): inscritos_usuarios,
@@ -73,12 +73,34 @@ final membros_e_visitas = <String, double>{
     Colors.red,
     Colors.green,
   ];
+  //inscritos/presentes
+  final inscritos_presentes_graph = <String, double>{
+    "Inscritos: "+(inscritos_usuarios+visitas+primeira_vez).toString():(inscritos_usuarios+visitas+primeira_vez),
+    "Presentes: "+pessoas_finais.toString() :pessoas_finais,
+  };
+
+  final colorList_inscritos_presentes_graph = <Color>[
+    Colors.red,
+    Colors.blue,
+  ];
+  //
+   //inscritos/presentes_reverso
+  final inscritos_presentes_reverso_graph = <String, double>{
+    "Inscritos: "+(inscritos_usuarios+visitas+primeira_vez).toString():(inscritos_usuarios+visitas+primeira_vez),
+    "Penetras: "+pessoas_finais.toString() : pessoas_finais,
+  };
+
+  final colorList_inscritos_presentes_reverso_graph = <Color>[
+    Colors.blue,
+    Colors.green,
+  ];
+  //
     return Scaffold(
       
       appBar: AppBar(
         title: Text('Relatorio'),
         centerTitle: true,
-        backgroundColor: Colors.purple,
+        backgroundColor: Global.principal,
       ),
       body: SingleChildScrollView(child:Column(
         children: [
@@ -131,6 +153,43 @@ final membros_e_visitas = <String, double>{
                 
               ),
             ),//fim grafico
+
+            if(pessoas_finais <= (inscritos_usuarios+visitas+primeira_vez)) ...[
+               Container( // grafico
+              padding: const EdgeInsets.symmetric(vertical: 16,horizontal: 16),
+              child: PieChart(
+                centerText: 'Inscritos/Presentes',
+                dataMap: inscritos_presentes_graph,
+                chartType: ChartType.ring,
+                baseChartColor: Colors.grey,
+                colorList: colorList_inscritos_presentes_graph,
+                chartValuesOptions: const ChartValuesOptions(
+                  showChartValuesInPercentage: true,
+                   showChartValuesOutside: true,
+                ),
+                totalValue: (inscritos_usuarios+visitas+primeira_vez),
+                
+              ),
+            ),//fim grafico
+            ]
+            else ...[
+                 Container( // grafico
+              padding: const EdgeInsets.symmetric(vertical: 16,horizontal: 16),
+              child: PieChart(
+                centerText: 'Inscritos/Penetras',
+                dataMap: inscritos_presentes_reverso_graph,
+                chartType: ChartType.ring,
+                baseChartColor: Colors.grey,
+                colorList: colorList_inscritos_presentes_reverso_graph,
+                chartValuesOptions: const ChartValuesOptions(
+                  showChartValuesInPercentage: true,
+                   showChartValuesOutside: true,
+                ),
+                totalValue: pessoas_finais,
+                
+              ),
+            ),//fim grafico
+            ]
          ],
       )
       ),

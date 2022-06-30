@@ -28,7 +28,7 @@ class Evento_HomeState extends State<Evento_Home> {
       appBar: AppBar(
         title: Text('Eventos'),
         centerTitle: true,
-        backgroundColor: Colors.purple,
+        backgroundColor: Global.principal,
       ),
       backgroundColor: Colors.white,
       body: Container(
@@ -66,7 +66,7 @@ class Evento_HomeState extends State<Evento_Home> {
         onPressed: () {
           Navigator.push(context, MaterialPageRoute(builder: (contexto) => const Evendo_Add()));
         },
-        backgroundColor: Color.fromARGB(255, 181, 130, 190),
+        backgroundColor: Global.secundaria,
         child: const Icon(Icons.add),
       ),
     );
